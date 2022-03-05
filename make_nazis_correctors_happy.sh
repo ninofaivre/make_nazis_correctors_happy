@@ -8,7 +8,12 @@ VPATH="VPATH = "														# init_vpath
 RULES="\$(DIR_SRC)"														# init_rules
 
 for file in $(echo $SRC_Wildcard | sed "s/+/\*/g"); do					# get_all_srcs_without_the_dir
-	SRC+=" $(basename $file)"
+	SRC+=" "
+	CURR_SRC=$(basename $file)
+	if [ $(((${#SRC}) + (${#CURR_SRC}))) -gt "79" ]; then
+		SRC+='\\\n'
+	fi
+	SRC+=$CURR_SRC
 done
 
 SRC_Wildcard=${SRC_Wildcard%????}										# remove_end_'*/%c'
