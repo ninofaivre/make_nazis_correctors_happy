@@ -6,12 +6,14 @@ SRC_Wildcard=$2															# get_srcs_path
 SRC="SRC ="																# init_src
 VPATH="VPATH = "														# init_vpath
 RULES="\$(DIR_SRC)"														# init_rules
+BR=0
 
 for file in $(echo $SRC_Wildcard | sed "s/+/\*/g"); do					# get_all_srcs_without_the_dir
 	SRC+=" "
 	CURR_SRC=$(basename $file)
-	if [ $(((${#SRC}) + (${#CURR_SRC}))) -gt "79" ]; then
+	if [ $(((${#SRC}) + (${#CURR_SRC}))) -gt $(((($BR) + (1)) * (79))) ]; then
 		SRC+='\\\n'
+		BR=$((($BR) + (1)))
 	fi
 	SRC+=$CURR_SRC
 done
