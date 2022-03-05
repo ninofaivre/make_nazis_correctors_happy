@@ -19,10 +19,15 @@ for file in $(echo $SRC_Wildcard | sed "s/+/\*/g"); do					# get_all_srcs_withou
 done
 
 SRC_Wildcard=${SRC_Wildcard%????}										# remove_end_'*/%c'
+BR=0
 
 for file in $(echo $SRC_Wildcard | sed "s/+/\*/g"); do					# replace_'+'_by_'*'
 	if [ "$VPATH" != "VPATH = " ]; then									# get_all_vpath_and_sep_by_':'
 		VPATH+="\\:"
+	fi
+	if [ $(((${#VPATH}) + (${#file}))) -gt $(((($BR) + (1)) * (79))) ]; then
+		VPATH+='\\\n'
+		BR=$((($BR) + (1)))
 	fi
 	VPATH+="$file"
 done
